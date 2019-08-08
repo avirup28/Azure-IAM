@@ -1,0 +1,20 @@
+$id = (Get-AzContext).Subscription.Id
+$VMs = Get-AzVm
+foreach ($VM in $VMs) {
+$Name = $VM.Name
+$RG = $VM.ResourceGroupName
+
+$RoleNames = New-Object System.Collections.ArrayList 
+ $RoleNames = (Get-AzRoleAssignment -ResourceGroupName $RG | `
+ where {$_.DisplayName -match "GBSG" -and $_.Scope -eq "/subscriptions/$id/resourceGroups/$RG" -and $_.ObjectType -eq "Group"}).DisplayName
+
+ foreach ($RoleName in $RoleNames) {
+
+if (($RoleName -match "RDP-User")){$user = $RoleName}
+elseif (($RoleName -match "RDP-Admin")) {$admin = $RoleName}
+elseif (($RoleName -match "RDP")) {$rdp = $RoleName}
+}
+
+Write-Host "$Name;$RG;$user;$admin;$rdp"
+
+}
