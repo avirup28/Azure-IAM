@@ -16,5 +16,6 @@ elseif (($RoleName -match "RDP")) {$rdp = $RoleName}
 }
 
 Write-Host "$Name;$RG;$user;$admin;$rdp"
+$RoleNames = @()
 
 }
